@@ -2,8 +2,8 @@
 
 import { BaseService } from './baseService';
 import { ITodoService } from '../interfaces/ITodoService';
-import { ITodo } from '../data/source/models/mongo/todoModel';
-import TodoRepository from '../data/source/repositories/mongo/todoRepository';
+import { ITodo } from '../data/source/models/postgres/todoModel';
+import TodoRepository from '../data/source/repositories/postgres/todoRepository';
 
 class TodoService extends BaseService<ITodo> implements ITodoService {
     constructor() {

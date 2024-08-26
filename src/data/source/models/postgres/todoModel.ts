@@ -1,44 +1,34 @@
 // src/data/source/models/postgres/todoModel.ts
 
-import { DataTypes, Model, Optional } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../../config/dbConfig';
 
-interface TodoAttributes {
+export interface ITodo extends Model {
     id: number;
     title: string;
+    description: string;
     completed: boolean;
 }
 
-interface TodoCreationAttributes extends Optional<TodoAttributes, 'id'> {}
-
-class Todo extends Model<TodoAttributes, TodoCreationAttributes> implements TodoAttributes {
-    public id!: number;
-    public title!: string;
-    public completed!: boolean;
-
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-}
-
-Todo.init({
+export const Todo = sequelize.define<ITodo>('Todo', {
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     completed: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
+        defaultValue: false,
+    },
 }, {
-    sequelize,
-    modelName: 'Todo',
     tableName: 'todos',
-    timestamps: true
+    timestamps: true,
 });
-
-export { Todo };

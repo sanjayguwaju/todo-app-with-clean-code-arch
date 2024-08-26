@@ -1,7 +1,7 @@
 // src/data/source/models/postgres/userModel.ts
 
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../config/dbConfig';
+import { sequelize } from '../../config/dbConfig'; // Ensure this path is correct
 
 interface UserAttributes {
     id: number;
@@ -36,7 +36,7 @@ User.init({
         unique: true
     }
 }, {
-    sequelize,
+    sequelize, // Ensure the sequelize instance is passed here
     modelName: 'User',
     tableName: 'users',
     timestamps: true

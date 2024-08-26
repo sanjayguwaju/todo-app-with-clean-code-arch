@@ -1,6 +1,6 @@
 // src/interfaces/ITodoService.ts
 
-import { ITodo } from '../data/source/models/mongo/todoModel';
+import { ITodo } from '../data/source/models/postgres/todoModel';
 
 export interface ITodoService {
     createTodo(todoData: Partial<ITodo>): Promise<ITodo>;
