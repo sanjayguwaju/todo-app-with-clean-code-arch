@@ -24,6 +24,10 @@ export const connectPostgres = async () => {
     try {
         await sequelize.authenticate();
         console.log('PostgreSQL connected');
+
+        // Sync all defined models to the DB
+        await sequelize.sync({ alter: true });
+        console.log('All models were synchronized successfully.');
     } catch (err) {
         console.error('PostgreSQL connection error:', err);
         process.exit(1);
