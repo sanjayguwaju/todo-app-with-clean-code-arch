@@ -1,45 +1,50 @@
 // src/data/source/models/postgres/userModel.ts
 
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../config/dbConfig'; // Ensure this path is correct
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../../config/dbConfig';
 
-interface UserAttributes {
+export interface IUser extends Model {
     id: number;
     name: string;
     email: string;
+    password: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
-
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-    public id!: number;
-    public name!: string;
-    public email!: string;
-
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-}
-
-User.init({
+export const User = sequelize.define<IUser>('User', {
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
-    }
+        unique: true,
+        validate: {
+            isEmail: true,
+        },
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: 'Password is required',
+            },
+            notEmpty: {
+                msg: 'Password cannot be empty',
+            },
+            len: {
+                args: [6, 100],
+                msg: 'Password should be between 6 and 100 characters',
+            },
+        },
+    },
 }, {
-    sequelize, // Ensure the sequelize instance is passed here
-    modelName: 'User',
     tableName: 'users',
-    timestamps: true
+    timestamps: true,
 });
-
-export { User };

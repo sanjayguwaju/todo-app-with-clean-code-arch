@@ -1,22 +1,23 @@
 // src/data/source/repositories/postgres/userRepository.ts
 
 import { BaseRepository } from '../baseRepository';
-import { User } from '../../models/postgres/userModel';
+import { User, IUser } from '../../models/postgres/userModel';
+import { Optional } from 'sequelize';
 
-class UserRepository extends BaseRepository<User> {
-    async create(data: Partial<User>): Promise<User> {
-        return await User.create(data);
+class UserRepository extends BaseRepository<IUser> {
+    async create(data: Partial<IUser>): Promise<IUser> {
+        return await User.create(data as Optional<any, string>);
     }
 
-    async findAll(): Promise<User[]> {
+    async findAll(): Promise<IUser[]> {
         return await User.findAll();
     }
 
-    async findById(id: number): Promise<User | null> {
+    async findById(id: number): Promise<IUser | null> {
         return await User.findByPk(id);
     }
 
-    async update(id: number, data: Partial<User>): Promise<User | null> {
+    async update(id: number, data: Partial<IUser>): Promise<IUser | null> {
         const user = await User.findByPk(id);
         if (user) {
             return await user.update(data);
@@ -24,7 +25,7 @@ class UserRepository extends BaseRepository<User> {
         return null;
     }
 
-    async delete(id: number): Promise<User | null> {
+    async delete(id: number): Promise<IUser | null> {
         const user = await User.findByPk(id);
         if (user) {
             await user.destroy();
